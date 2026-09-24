@@ -1,0 +1,38 @@
+{
+  "id": "./",
+  "name": "Touch Grass",
+  "short_name": "touchgrass",
+  "description": "Touch grass online, no need to go outside.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b170e",
+  "theme_color": "#0b170e",
+  "icons": [
+    {
+      "src": "assets/icons/touchgrass-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/touchgrass-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/touchgrass-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/touchgrass-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

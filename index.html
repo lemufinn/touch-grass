@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Touch Grass</title>
+
+  <!-- 🌐 PRIMARY META TAGS (Basic SEO) -->
+  <meta name="title" content="Touch Grass">
+  <meta name="description" content="Touch grass online, no need to go outside.">
+
+  <!-- 💬 OPEN GRAPH / FACEBOOK / WHATSAPP META TAGS (Social Preview) -->
+  <meta property="og:type" content="website">
+  <!-- CHANGE THIS URL TO YOUR EXACT LIVE WEBSITE URL -->
+  <meta property="og:url" content="https://lemufinn.github.io/">
+  <meta property="og:title" content="Touch Grass">
+  <meta property="og:description" content="Touch grass online, no need to go outside.">
+  <!-- Absolute path to your preview image is mandatory for WhatsApp -->
+  <meta property="og:image" content="--">
+
+  <!-- 🐦 TWITTER / X META TAGS -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- CHANGE THIS URL TO YOUR EXACT LIVE WEBSITE URL -->
+  <meta name="twitter:url" content="https://lemufinn.github.io/">
+  <meta name="twitter:title" content="Touch Grass">
+  <meta name="twitter:description" content="Touch grass online, no need to go outside.">
+  <!-- Absolute path to your preview image -->
+  <meta name="twitter:image" content="">
+
+  <!-- 📱 PWA & MOBILE WEB APP META TAGS (Chrome OS & All Devices) -->
+  <meta name="theme-color" content="#0b170e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Touch Grass">
+
+  <!-- 🏷️ APP ICONS (Chrome & iOS) -->
+  <link rel="icon" type="image/png" sizes="192x192" href="--">
+  <link rel="apple-touch-icon" href="--">
+
+  <!-- 📑 WEB APP MANIFEST LINK (Required for Install Button) -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- 🎨 STYLESHEET -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- 📦 THREE.JS ENGINE LIBRARY -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- 🎮 3D Canvas Container -->
+  <div id="webgl-container"></div>
+
+  <!-- 🎛️ Top Right Circular Action Buttons -->
+  <div id="top-right-bar">
+    <!-- PWA Install Button (Dynamic, hidden by default) -->
+    <button id="btn-grassy" class="btn-circle" title="Ask Grassy">🤖</button>
+    <button id="btn-info" class="btn-circle" title="Info">ℹ️</button>
+  </div>
+
+  <!-- ℹ️ Info Modal -->
+  <div id="modal-info" class="popup-modal">
+    <div class="modal-header">
+      <h3>Touch Grass</h3>
+      <button id="close-info" class="btn-close-circle">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Touch grass online, no need to go outside.</p>
+      <p style="margin-top: 12px;">
+        App developed by <a href="https://lemufinn.github.io/" target="_blank" rel="noopener" class="blue-link">Mufinn</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- 🤖 Ask Grassy Modal -->
+  <div id="modal-grassy" class="popup-modal">
+    <div class="modal-header">
+      <h3>Ask Grassy</h3>
+      <button id="close-grassy" class="btn-close-circle">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-weight: 600; color: #8ed993; margin-bottom: 6px;">🤖 Grassy AI:</p>
+      <p style="font-size: 15px; line-height: 1.5; color: #ffffff;">
+        ummm why th do we need an AI in touching grass web app? I don't think we need AI everywhere
+      </p>
+    </div>
+  </div>
+
+  <!-- 🚀 Main JavaScript App -->
+  <script src="js/app.js"></script>
+  
+  <!-- ⚙️ SERVICE WORKER & PWA INSTALL LOGIC -->
+  <script>
+    // 1. Register Service Worker (Ensures install button capability)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        // Register sw.js in the main directory
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Touch Grass PWA Service Worker Registered'))
+          .catch(err => console.error('PWA Service Worker Registration Failed: ', err));
+      });
+    }
+
+    // 2. Capture and handle the Native Browser PWA Install Prompt
+    let deferredPrompt;
+    const installBtn = document.getElementById('btn-install');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the default browser mini-infobar from appearing
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      deferredPrompt = e;
+      // Show our custom circular install button (📥)
+      if (installBtn) {
+        installBtn.style.display = 'flex';
+      }
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        // Show the native browser install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to the PWA install prompt: ${outcome}`);
+        // We no longer need the prompt; it can only be used once
+        deferredPrompt = null;
+        // Hide our custom install button
+        installBtn.style.display = 'none';
+      });
+    }
+
+    // Listen for successful installation event
+    window.addEventListener('appinstalled', () => {
+      console.log('Touch Grass PWA was installed successfully!');
+      if (installBtn) installBtn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
